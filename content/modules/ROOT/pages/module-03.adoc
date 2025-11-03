@@ -6,7 +6,7 @@ In this module, you will add a network interface (NIC) to a virtual machine. To 
 == Adding CPU and Memory to a running VM
 
 [#disk]
-== Adding virtual disks to a running VM
+== Adding a virtual disk to a running VM
 
 [#nic]
 == Adding a NIC to a running VM

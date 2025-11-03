@@ -8,9 +8,9 @@
 
 
 * xref:module-03.adoc[3. Hot Plugging Resources  ]
-** xref:module-03.adoc#cpu[CPU and Memory]
-** xref:module-03.adoc#disk[Disk]
-** xref:module-03.adoc#nic[NIC]
+** xref:module-03.adoc#cpu[Adding CPU and Memory to a running VM]
+** xref:module-03.adoc#disk[Adding a virtual disk to a running VM]
+** xref:module-03.adoc#nic[Adding a NIC to a running VM]
 
 * xref:module-04.adoc[4. Fencing and How to Handle Node Failure  ]
 ** xref:module-04.adoc#fencing[Fencing]
