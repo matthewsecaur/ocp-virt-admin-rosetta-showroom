@@ -11,6 +11,7 @@
 ** xref:module-03.adoc#cpu[CPU]
 ** xref:module-03.adoc#memory[Memory]
 ** xref:module-03.adoc#disk[Disk]
+** xref:module-03.adoc#nic[NIC]
 
 * xref:module-04.adoc[4. Fencing and How to Handle Node Failure  ]
 ** xref:module-04.adoc#fencing[Fencing]
