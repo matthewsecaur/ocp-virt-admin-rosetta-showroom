@@ -13,10 +13,10 @@ In this module, you will add a network interface (NIC) to a virtual machine. To 
 In this lab, we will add a new network interface connection (NIC) to an existing VM.
 
 [start=1]
-. Login to the OpenShift console using the credentials provided to you by the lab administrator. Navigate to Virtualization -> Virtual Machines, and select the $PROJECT project. Select the VM named rhel9-01.
+. Login to the OpenShift console using the credentials provided to you by the lab administrator. Navigate to Virtualization -> Virtual Machines, and select the virtualmachines project. Select the VM named vm01.
 
 [start=2]
-. Take note of the worker node on which the VM is running (lt01wkr02.matt.lab)
+. Take note of the worker node on which the VM is running (worker-cluster-s67qr-1)
 ++++
 <a href="_image::exercise3/03-image-002.png" target="_blank" class="popup">
 ++++
@@ -46,8 +46,16 @@ image::exercise3/03-image-003b.png[]
 ++++
 
 [start=4]
-. Back in the Network configuration screen, click on the button “Add network interface”. Provide a name for the new interface, such as nic-1. The model should be virtio, and the Network should be default/module-X. 
+. Back in the Network configuration screen, click on the button “Add network interface”. Provide a name for the new interface, such as nic-1. The model should be virtio, and the Network should be default/east-west-nad. 
 Click on the Save button.
+++++
+<a href="_image::exercise3/03-image-004.png" target="_blank" class="popup">
+++++
+image::exercise3/03-image-004.png[]
+++++
+</a>
+++++
+
 
 [start=5]
 . Click on the “>” symbol next to the “Pending changes” banner that has appeared below the VM name and note that the message indicates a restart or migration is required for the NIC addition to take effect.
@@ -71,11 +79,10 @@ image::exercise3/03-image-006.png[]
 ++++
 
 [start=7]
-. Navigate to the Actions pull down menu, highlight Migration, and select Compute. A window will appear asking to migrate to an Automatically selected Node, or a Specific Node. Your lab environment only has two worker nodes, so leave the selection at the default and click the Migrate VirtualMachine button.
-Click the Overview tab.
+. Follow the steps from Module 1 to live migrate the VM from one node to any other worker node. Once the migration has completed, continue with this module.
 
 [start=8]
-. After a few moments, you will see that the VM is now on a different node (lt01wkr01.matt.lab) and the “Pending changes” message has gone away.
+. Navigate back to the Console tab and you may see messages have appeared on the VM console that new hardware has been added. You can view the new NIC from the operating system by running the command ip address and viewing the output.
 ++++
 <a href="_image::exercise3/03-image-008.png" target="_blank" class="popup">
 ++++
@@ -84,22 +91,12 @@ image::exercise3/03-image-008.png[]
 </a>
 ++++
 
-[start=9]
-. Navigate back to the Console tab and you may see messages have appeared on the VM console that new hardware has been added. You can view the new NIC from the operating system by running the command ip address and viewing the output.
+[start=10]
+. The new NIC is now available for use (enp2s0).
 ++++
 <a href="_image::exercise3/03-image-009.png" target="_blank" class="popup">
 ++++
 image::exercise3/03-image-009.png[]
-++++
-</a>
-++++
-
-[start=10]
-. The new NIC will get an IP address if there is a DHCP server on the network (IS THERE??)
-++++
-<a href="_image::exercise3/03-image-010.png" target="_blank" class="popup">
-++++
-image::exercise3/03-image-010.png[]
 ++++
 </a>
 ++++
