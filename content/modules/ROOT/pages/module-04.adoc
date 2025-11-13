@@ -1,27 +1,29 @@
-= Affinity
+[4. Affinity and Anti-Affinity for VM Placement ]
+
+= Affinity and Anti-Affinity for VM Placement
 
 In this lab, you will be applying Node Affinity, Pod Affinity, and Anti-Pod Affinity to Virtual Machines (VMs). The primary objective is to deepen your understanding of these principles and demonstrate how they can be applied effectively in real-world scenarios.
 
 
-[Node Affinity]
-=Node Affinity
+[#Node Affinity]
+= Node Affinity
 
 [start=1]
-.  First go to the affinity project
+. First go to the affinity project
 Home > Project > affinity
 
 [start=2]
-.  Login into your bastion host with credentials provided to you by the lab administrator. You will need this for later steps. You will need this for later steps.
+. Login into your bastion host with credentials provided to you by the lab administrator. You will need this for later steps. You will need this for later steps.
 	
 ssh lab-user@<host> -p 32270
 
 [start=3]
-.  Using the credentials provided by the lab administrator, log in to the OpenShift CLI from your terminal on the bastion host. Be sure to substitute the placeholder password and cluster name with the specific values you were given.
+. Using the credentials provided by the lab administrator, log in to the OpenShift CLI from your terminal on the bastion host. Be sure to substitute the placeholder password and cluster name with the specific values you were given.
 oc login -u admin -p <password> --server=https://api.cluster-<clustername>.dynamic.redhatworkshops.io:6443
 
 
 [start=4]
-.  Find out what node the node-affinity-vm is running on. 
+. Find out what node the node-affinity-vm is running on. 
 To do this you can look at the vm in the affinity project or you can use the openshift CLI.
 oc project affinity
 oc get vmi node-affinity-vm
@@ -72,7 +74,7 @@ oc edit vm pod-anti-affinity-vm
 oc get vmi node-affinity-vm
  
 
-[Pod Affinity]
+[#Pod Affinity]
 =Node Affinity
 We will now demonstrate  pod affinity.
 
@@ -234,8 +236,9 @@ oc get vmi node-affinity-vm
 . You will now see the the pod-affinity-vm is now running the same location as the node-affinity-vm because of the pod affinity rule.
 
 
-[Pod Anti-Affinity]
-=Pod Anti-affinity
+[#Pod Anti-Affinity]
+= Pod Anti-Affinity
+
 [start=1]
 . We are going to use the node-affinity-vm and reusing app: node-affinity-vm label  we created last time to create our pod anti affinity rule.
 [start=2]
