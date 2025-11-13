@@ -92,11 +92,104 @@ spec:
     devEnableSoftTainter: true
     devDeviationThresholds: AsymmetricLow
     devActualUtilizationProfile: PrometheusCPUCombined
+    namespaces:
+      included:
+        - dynamic-schedule
   profiles:
-    - KubeVirtRelieveAndMigrate
-  deschedulingIntervalSeconds: 3600
+    - DevKubeVirtRelieveAndMigrate # For OCP 4.20, use KubeVirtRelieveAndMigrate
+  deschedulingIntervalSeconds: 600 # This is the interval at which the descheduler will run ; Set a lower value for testing purposes
   managementState: Managed    
 ----
 
 NOTE: Notice the mode is set to Predictive. By default, the descheduler does not evict pods. To evict pods, set mode to Automatic.
+
+
+= 4. Ensure the descheduler pod is running and check the logs in the openshift-kube-descheduler-operator namespace
+
+[source,sh,role=execute]
+----
+oc logs -n openshift-kube-descheduler-operator -l app=descheduler
+----
+
+
+= 5. Deploy a stress test pod to validate the descheduler functionality
+
+== 5.1 Create a new project for the stress test
+[source,sh,role=execute]
+----
+oc new-project stress-test
+----
+
+== 5.2 Create the configuration from a config map
+[source,sh,role=execute]
+----
+oc apply -f https://raw.githubusercontent.com/mmayeras/k8s-stress-test/refs/heads/main/stress-config.yaml
+----
+
+== 5.3 Create the deployment
+[source,sh,role=execute]
+----
+https://raw.githubusercontent.com/mmayeras/k8s-stress-test/refs/heads/main/stress-deploy.yaml
+----
+
+== 5.4 Edit the deployment to use a specific node selector
+
+[source,sh,role=execute]
+----
+oc patch deployment stress-test -p '{"spec":{"template":{"spec":{"nodeSelector":{"kubernetes.io/hostname":"worker01"}}}}}'
+----
+
+== 5.5 Verify the deployment
+[source,sh,role=execute]
+----
+oc get pods -n stress-test
+----
+
+== 5.6 Observe the descheduler pod logs in the openshift-kube-descheduler-operator namespace
+[source,sh,role=execute]
+----
+oc logs -f -n openshift-kube-descheduler-operator -l app=descheduler
+----
+
+You should see logs like the following:
+
+[source,text]
+----
+I1113 15:24:57.371043       1 lownodeutilization.go:261] "Number of overutilized nodes" totalNumber=1
+I1113 15:24:57.371052       1 nodeutilization.go:174] "Total capacity to be moved" MetricResource=143
+I1113 15:24:57.371273       1 nodeutilization.go:189] "Pods on node" node="worker01" allPods=72 nonRemovablePods=45 removablePods=27
+I1113 15:30:00.673653       1 nodeutilization.go:205] "Evicting pods based on priority, if they have same priority, they'll be evicted based on QoS tiers"
+I1113 15:30:00.673755       1 evictions.go:551] "Evicted pod in dry run mode" pod="dynamic-schedule/virt-launcher-vm01" reason="" strategy="LowNodeUtilization" node="worker01" profile="DevKubeVirtRelieveAndMigrate"
+----
+
+
+NOTE: Notice the mode is set to Predictive so the eviction is in dry run mode. To evict pods, set mode to Automatic.
+
+== 6. Turn on the descheduler mode to Automatic
+[source,sh,role=execute]
+----
+oc -n openshift-kube-descheduler-operator patch kubedescheduler cluster --type merge -p '{"spec":{"mode":"Automatic"}}'
+----
+
+== 7. Verify the descheduler pod logs in the openshift-kube-descheduler-operator namespace
+[source,sh,role=execute]
+----
+oc logs -f -n openshift-kube-descheduler-operator -l app=descheduler
+----
+
+== 8. Confirm the pods are evicted and rescheduled on another node
+
+[source,sh,role=execute]
+----
+oc get pods -n dynamic-schedule -o wide
+----
+
+You should see the following output: 
+
+[source,text]
+----
+NAME                     READY   STATUS    RESTARTS   AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+virt-launcher-vm01       1/1     Running   0          10m     10.129.2.111   worker21   <none>           <none>
+virt-launcher-vm02       1/1     Running   0          10m     10.129.2.112   worker02   <none>           <none>
+----
 
