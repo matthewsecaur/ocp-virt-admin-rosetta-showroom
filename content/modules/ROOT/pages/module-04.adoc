@@ -8,6 +8,11 @@ In this lab, you will be applying Node Affinity, Pod Affinity, and Anti-Pod Affi
 [#nodeaffinity]
 == Node Affinity
 
+Node Affinity defines rules that guide the scheduler to attract a Virtual Machine Pod to a specific node or group of nodes. These rules rely on matching labels applied to the nodes.
+The core use case for Node Affinity is to ensure that a VM runs only on nodes that possess specific hardware features, such as a particular GPU model or a high amount of RAM, by matching the corresponding labels on the node.
+
+This lab will demonstrate how Node Affinity is set up and how it functions.
+
 [start=1]
 . First navigate to the affinity project.
 Home → Project → affinity
@@ -110,7 +115,11 @@ oc get vmi node-affinity-vm
 
 [#podaffinity]
 == Pod Affinity
-We will now demonstrate pod affinity.
+Pod Affinity is a scheduling rule that co-locates a VM Pod and an existing Pod (or another VM Pod) with a specific label onto the same node.
+
+The primary benefit of using pod affinity is to improve performance for dependent VMs or services that require low-latency communication by guaranteeing their placement on the same worker node.
+
+This lab will illustrate the setup and function of Pod Affinity.
 
 [start=1]
 . First we are going to add a label to node-affinity-vm. So we can make this the vm the pod that we will have node affinity to. On the OpenShift Console we are going to edit the vm and add the app: node-aff
@@ -309,6 +318,13 @@ oc get vmi node-affinity-vm
 
 [#podantiaffinity]
 == Pod Anti-Affinity
+
+Pod Anti-affinity is a crucial feature for achieving High Availability (HA) in virtualized environments. It functions by instructing the scheduler to prevent the co-location of VM Pods on the same node if they possess a specific label.
+
+The primary benefit of this rule is to enhance application resilience. For instance, by ensuring that VM Pods belonging to the same service (such as a database cluster) are distributed across different nodes, a failure in a single node will not cause an outage for the entire service.
+
+This lab will guide you through setting up and demonstrating the functionality of Pod Anti-Affinity.
+
 
 [start=1]
 . We are going to use the node-affinity-vm and reusing app: node-affinity-vm label  we created last time to create our pod anti affinity rule.
