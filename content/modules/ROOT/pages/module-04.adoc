@@ -45,7 +45,7 @@ oc get nodes
 oc label node <worker where node-affinity-vm is not running> zone=east
 ----
 
-image::exercise6/04-image-affinity.png[title="Label Nodes", link=self, window=blank, width=100%]
+image::exercise4/04-image-affinity.png[title="Label Nodes", link=self, window=blank, width=100%]
 
 Alternatively you can use the OpenShift Console by going to Compute → Nodes  and then pick a node where node-affinity-vm is not running. Then click the 3 dots and click edit labels.
 
