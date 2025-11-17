@@ -231,4 +231,82 @@ By design, Kubernetes, and hence OpenShift and OpenShift Virtualization, does no
 
 Memory oversubscription without use of swap is hazardous because if the amount of memory required by processes running on a node exceeds the amount of RAM available, processes will be killed. That's not desirable in any event, but particularly not for VMs where the workloads running on VMs will be taken down if the VMs are killed. 
 
+=== Instructions
+
+[start=1]
+. By default, the memory overcommit ratio is 1:1. This means that the amount of memory requested by a VM is equal to the amount of memory allocated to the VM.
+
+
+Observe the memory requests for the virt-launcher pod compared to the memory allocated to the VM :
+
+image::exercise2/vm-memory-assigned.png[title="VM Memory Assigned", link=self, window=blank, width=100%]
+
+
+image::exercise2/virt-launcher-memory-request.png[title="Virt-Launcher Memory Request", link=self, window=blank, width=100%]
+
+
+We can observe that the virt-launcher pod is requesting 2696Mi which is 2048Mi + some overhead.
+
+This overhead is necessary and expected - it ensures the VM has enough resources to run properly.
+
+
+[start=2]
+. Now let's enable the memory overcommit feature
+
+Navigate to Virtualization → Overview → Settings → Cluster → General Settings and Enable "Enable memory density"
+
+image::exercise2/enable-memory-overcommit.png[title="Enable Memory Overcommit", link=self, window=blank, width=100%]
+
+You can confirm using the CLI :
+
+[source,bash]
+----
+oc get hyperconverged -n openshift-cnv kubevirt-hyperconverged -o json | jq '.spec.higherWorkloadDensity.memoryOvercommitPercentage'
+150
+----
+
+This means that the memory overcommit ratio is 150% which is 1.5:1.
+
+
+[start=3]
+. Now let's observe the memory requests for the virt-launcher pod compared to the memory allocated to the VM.
+
+Turn off the VM and restart it to apply the new setting, then observe the memory requests for the virt-launcher pod :
+
+
+image::exercise2/virt-launcher-memory-request-overcommit.png[title="Virt-Launcher Memory Request 1.5x", link=self, window=blank, width=100%]
+
+
+We can observe that the virt-launcher pod is requesting 2109734912 bytes which is ~ 2011Mi = ~1.96GiB.
+
+This is less than the 2048MiB requested by the VM. This is because the memory overcommit ratio is 150%.
+
+
+[start=4]
+. Let's increase the memory overcommit ratio to 200% and add 2GiB to the VM.
+
+
+
+[source,bash]
+----
+oc patch hyperconverged -n openshift-cnv kubevirt-hyperconverged --type merge -p '{"spec":{"higherWorkloadDensity":{"memoryOvercommitPercentage":200}}}'
+hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
+
+oc get hyperconverged -n openshift-cnv kubevirt-hyperconverged -o json | jq '.spec.higherWorkloadDensity.memoryOvercommitPercentage'
+200
+----
+
+This means that the memory overcommit ratio is now 200%.
+
+Stop and restart the VM to apply the new setting, then observe the memory requests for the virt-launcher pod from the web console or from the CLI:
+
+[source,bash]
+----
+oc get pod -l vm.kubevirt.io/name=overcommit-vm-1 -o json | jq .items[0].spec.containers[0].resources.requests.memory
+"1670Mi"
+----
+
+We can observe that the virt-launcher pod is now requesting 1670Mi which is ~ 1.6GiB.
+
+
 
