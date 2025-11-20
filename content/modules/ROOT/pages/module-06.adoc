@@ -46,7 +46,7 @@ oc login -u admin -p <password> --server=https://api.cluster-<clustername>.dynam
 ----
 $ oc get vmi -n fencing
 NAME          AGE    PHASE     IP            NODENAME                 READY
-fencing-vm1   169m   Running   10.235.0.29   worker-cluster-pjhxm-1   True
+fencing-vm1   169m   Running   10.235.0.29   worker-cluster-r2k68-1   True
 ----
 
 [start=6]
