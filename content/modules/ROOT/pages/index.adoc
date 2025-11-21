@@ -59,7 +59,11 @@ oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_passw
 Cluster API: {openshift_api_server_url}[{openshift_api_server_url},window=_blank]
 
 
-Username: `{openshift_cluster_admin_username}`
+.Username
+[.wrap,console,role=execute,subs="attributes"]
+----
+{openshift_cluster_admin_username}
+----
 
 
 Password: `{openshift_cluster_admin_password}`
