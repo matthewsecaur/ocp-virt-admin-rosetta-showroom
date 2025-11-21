@@ -16,7 +16,7 @@ Click the Create NodeHealthCheck button
 image::exercise6/06-image-nodehealthcheck.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 
 [start=2]
-. Name the NodeHealthCheck `workerhealthcheck` and in the `Selector labels` menu, select `worker`.
+. Name the NodeHealthCheck `workerhealthcheck` and in the *Selector labels* menu, select *worker*.
 +
 image::exercise6/06-image-nodehealthcheck2.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 +
@@ -43,7 +43,7 @@ oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_passw
 ----
 
 [start=5]
-. Next, locate the node hosting `fencing-vm1` located within the `fencing` project section and record this information. In this example, the node name is `worker-cluster-r2k68-1`.
+. Next, locate the node hosting *fencing-vm1* located within the *fencing* project section and record this information. In this example, the node name is *worker-cluster-r2k68-1*.
 +
 [source,text,role=execute]
 .Get VM info
@@ -63,7 +63,7 @@ To monitor the process, open one additional terminal sessions and SSH into the b
 
 
 [start=7]
-. In second terminal run a command to continually monitor the state of the worker node you found above (e.g. `worker-cluster-r2k68-1`, but your node name will be different).
+. In second terminal run a command to continually monitor the state of the worker node you found above (e.g. *worker-cluster-r2k68-1*, but your node name will be different).
 +
 [source,text,role=execute]
 .Monitor the worker nodes
@@ -90,7 +90,7 @@ Removing debug pod ...
 
 
 [start=9]
-. In your orginal terminal you opened, you will monitor the status of your virtual machine, `fencing-vm1`.
+. In your orginal terminal you opened, you will monitor the status of your virtual machine, *fencing-vm1*.
 Here you will see that self remediation is occurring on the node.
 +
 [source,text,role=execute]
