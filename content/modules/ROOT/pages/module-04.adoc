@@ -23,14 +23,14 @@ Home → Project → affinity
 
 [source,bash]
 ----	
-ssh lab-user@<host> -p 32270
+ssh {ssh_user}@{ssh_password} -p 32270
 ----
 
 [start=3]
 . Using the credentials provided by the lab administrator, log in to the OpenShift CLI from your terminal on the bastion host. Be sure to substitute the placeholder password and cluster name with the specific values you were given.
 [source,bash]
 ----
-oc login -u admin -p <password> --server=https://api.cluster-<clustername>.dynamic.redhatworkshops.io:6443
+oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
 ----
 
 [start=4]

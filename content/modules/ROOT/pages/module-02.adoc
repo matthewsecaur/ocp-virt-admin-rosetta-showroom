@@ -33,7 +33,7 @@ ssh {ssh_user}@{ssh_password} -p 32270
 
 [,shell,role=execute,subs="attributes"]
 ----
-oc login -u {openshift_cluster_admin_username} -p openshift_cluster_admin_password} --server=https://api.cluster-<clustername>.dynamic.redhatworkshops.io:6443
+oc login -u {openshift_cluster_admin_username} -p {openshift_cluster_admin_password} --server={openshift_api_server_url}
 $ oc login whoami --show-console
 ----
 +
@@ -168,13 +168,17 @@ image::exercise2/overcommit-nproc.png[title="Confirm number of CPUs", link=self,
 
 . Calculating CPU Overcommit Ratio
 +
+
 To calculate the overcommit ratio on a specific node:
 
 .. Identify all VMs running on the node:
 +
+IMPORTANT: In the following step, you need to replace "node_name" with the actual node name.
++
 [,shell,role="execute wrap",subs="attributes"]
 ----
-oc get vmi -A -o wide | grep <node_name>
+NODE="node_name" # Replace with the actual node name
+oc get vmi -A -o wide | grep "$NODE"
 ----
 +
 [,shell,role=wrap,subs="attributes"]
@@ -189,7 +193,7 @@ over-commit        overcommit-vm-1         47m     Running   10.133.2.25   worke
 [,shell,role="execute wrap",subs="attributes"]
 ----
 oc get vmi -A -o json | \
-jq -r --arg NODE "<node_name>" \
+jq -r --arg NODE "$NODE" \
 '.items[] | select(.status.nodeName == $NODE) | 
 {
   name: .metadata.name,
