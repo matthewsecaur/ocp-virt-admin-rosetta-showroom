@@ -43,7 +43,7 @@ oc login -u `{ocp_admin_username}` -p `{ocp_admin_password}` --server=`{ocp_api_
 ----
 
 +
-oc login -u `{ocp_admin_username}` -p `{ocp_admin_password}` --server=`{ocp_api_url}`
+oc login -u `{openshift_cluster_admin_username}` -p `{openshift_cluster_admin_password}` --server=`{openshift_api_url}`
 
 +
 Username: `{openshift_cluster_admin_username}`
