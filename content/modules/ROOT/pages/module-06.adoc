@@ -14,7 +14,7 @@ include::lab-access.adoc[]
 
 +
 
-. Navigate to *Ecosystem → Installed Operators*. Then click *Node Health Check → create NodeHealthCheck*
+. Navigate to *Ecosystem → Installed Operators -> Node Health Check Operator*. Then click *Node Health Check → Create NodeHealthCheck*
 
 +
 Click the Create NodeHealthCheck button
